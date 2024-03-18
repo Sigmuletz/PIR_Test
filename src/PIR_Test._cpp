@@ -1,0 +1,23 @@
+#include <Arduino.h>
+
+void setup() {
+
+  Serial.begin(115200);
+  Serial.println("Starting");
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(14, INPUT);  //Pin 4 <> the larger PIR 
+  //pinMode(2, OUTPUT);	//Pin 2 <> blue LED (indicates the status of the larger PIR)
+  //pinMode(11, OUTPUT);  //Pin 11 <> red LED (indicates the status of the smaller PIR)<br>
+  delay(1000);
+}
+int id = 0;
+void loop() {
+  id++;
+  int lPIR = digitalRead(14);
+ // digitalWrite(2, lPIR);
+  //Serial.print(id);
+  Serial.print("Large PIR:  ");
+  Serial.print(lPIR);
+  Serial.println();
+  delay(100);
+}

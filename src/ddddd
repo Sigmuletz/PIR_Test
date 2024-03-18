@@ -1,0 +1,43 @@
+description: ""
+trigger:
+  - platform: event
+    event_type: feedreader
+    event_data:
+      feed_url: https://feeds.bbci.co.uk/news/world/rss.xml
+condition: []
+action:
+  - service: input_text.set_value
+    data:
+      value: "{{ trigger.event.data.title }}"
+    target:
+      entity_id: input_text.newsitem_title
+    enabled: true
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: media_player.play_media
+    data:
+      entity_id:
+        - media_player.studio
+      media_content_id: amzn_sfx_doorbell_chime_01
+      media_content_type: sound
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: mqtt.publish
+    data:
+      qos: "0"
+      retain: false
+      topic: awtrix/notify
+      payload_template: |-
+        {
+          "text": "{{ states('input_text.newsitem_title') }} ",
+          "icon": "1364",
+          "repeat": 2,
+          "duration": 20
+        }      
+mode: single
